@@ -56,54 +56,12 @@ class _MyHomePageState extends State<MyHomePage> {
   var DISPLAY_TXT_SIZE = 20.0;
   var ICON_BAR_COLOR = Colors.white;
   TextEditingController _textEditingController = new TextEditingController();
-  Phonecallstate  phonecallstate;
-  PhonecallState phonecallstatus;
 
-  var  phonecallstatuslog;
+
 
   Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   bool isSettingHide = true;
 
-
-  void initPhonecallstate() async {
-    print("Phonecallstate init");
-
-    phonecallstate = new Phonecallstate();
-    phonecallstatus = PhonecallState.none;
-
-
-    phonecallstate.setIncomingHandler(() {
-      setState(() {
-        phonecallstatus = PhonecallState.incoming;
-        phonecallstatuslog =  phonecallstatuslog.toString() + PhonecallState.incoming.toString()+"\n";
-      });
-    });
-
-    phonecallstate.setDialingHandler(() {
-      setState(() {
-        phonecallstatus = PhonecallState.dialing;
-        phonecallstatuslog =  phonecallstatuslog.toString() + PhonecallState.dialing.toString()+"\n";
-      });
-    });
-
-    phonecallstate.setConnectedHandler(() {
-      setState(() {
-        phonecallstatus = PhonecallState.connected;
-        phonecallstatuslog =  phonecallstatuslog.toString() + PhonecallState.connected.toString()+"\n";
-      });
-    });
-
-    phonecallstate.setDisconnectedHandler(() {
-      setState(() {
-        phonecallstatus = PhonecallState.disconnected;
-        phonecallstatuslog =  phonecallstatuslog.toString() + PhonecallState.disconnected.toString()+"\n";
-      });
-    });
-
-    phonecallstate.setErrorHandler((msg) {
-
-    });
-  }
   @override
   void dispose() {
     // TODO: implement dispose
@@ -161,7 +119,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
       });
-      initPhonecallstate();
+
     }
 
 
@@ -210,40 +168,68 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ],
     );
+    final bottomContent = Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: <Widget>[
+        Container(
+          margin: EdgeInsets.only(top: 30.0, right: 16.0, left: 16.0),
+          child: IconButton(
+            onPressed: () {
+              _showBottomSheetColor(context);
+            },
+            icon: Icon(Icons.list, color: ICON_BAR_COLOR),
+          ),
+        ),
+        Container(
+          margin: EdgeInsets.only(top: 30.0, right: 16.0, left: 16.0),
+          child: IconButton(
+            onPressed: () {
+              _showBottomSheetColor(context);
+            },
+            icon: Icon(Icons.help, color: ICON_BAR_COLOR),
+          ),
+        ),
+
+      ],
+    );
 
     return Scaffold(
       backgroundColor: DISPLAY_BG_COLOR,
-      body: GestureDetector(
-        onTap: () {
-          setState(() {
-            isSettingHide = !isSettingHide;
-          });
+      body: Stack(
+        overflow: Overflow.visible,
+        children: <Widget>[
+          Container(
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isSettingHide = !isSettingHide;
+                });
 
-          if (!isSettingHide) {
-            // if it show on screen, hide it after a while
-            Future.delayed(const Duration(seconds: 7), () {
-              setState(() {
-                isSettingHide = true;
-              });
-            });
-          }
-        },
-        child: Container(
-          alignment: Alignment.center,
-          child: Column(
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.all(1.0),
-                child: isSettingHide ? Container() : topContent,
+                if (!isSettingHide) {
+                  // if it show on screen, hide it after a while
+                  Future.delayed(const Duration(seconds: 7), () {
+                    setState(() {
+                      isSettingHide = true;
+                    });
+                  });
+                }
+              },
+              child: Container(
+                alignment: Alignment.center,
+                child: Column(
+                  children: <Widget>[
+
+                    Expanded(
+                      child: _buildMarquee(),
+                    )
+                  ],
+                ),
               ),
-              SizedBox(height: 90.0,),
-              new Text('Last state: $phonecallstatuslog', style: TextStyle(color: Colors.white),),
-              Expanded(
-                child: _buildMarquee(),
-              )
-            ],
+            ),
           ),
-        ),
+          isSettingHide ? Container() : topContent,
+          Positioned( bottom: 10, right: 10, child: isSettingHide ? Container() : bottomContent),
+        ],
       ),
     );
   }
