@@ -34,8 +34,8 @@ class Item {
   static List COLOR_LIST_STR = [C_WHITE, C_BLACK, C_BLUE_ACCENT, C_RED, C_RED_ACCENT];
 
 
-  static List SPEED_LIST = [50, 60, 80, 100, 120, 150, 180 , 200 , 250 , 300];
-  static List TEXT_SIZE_LIST = [12, 14, 16, 18, 20, 24, 26 , 30 , 36 , 40, 50, 60, 70, 80, 90, 100, 110, 120, 150, 180, 200, 250, 300, 400, 500, 600, 700];
+  static List SPEED_LIST = [50, 60, 80, 100, 120, 150, 180 , 200 , 250 , 300, 400, 500, 800, 1000];
+  static List TEXT_SIZE_LIST = [12, 14, 16, 18, 20, 24, 26 , 30 , 36 , 40, 50, 60, 70, 80, 90, 100, 110, 120, 150, 180, 200, 250, 300, 400, 500, 600, 700, 1000];
 
 
 
